@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Spring Study - Board</title>
+  <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.3/css/bootstrap.min.css}">
+</head>
+
+<body>
+
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-5">
+    <div class="container">
+      <a class="navbar-brand" th:href="@{/}">Spring Study</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" th:href="@{/}">홈</a></li>
+          <li class="nav-item"><a class="nav-link" th:href="@{/chat/enterence}">채팅</a></li>
+          <li class="nav-item"><a class="nav-link active" th:href="@{/board}">게시판</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+
+        <h2 class="mb-4 fw-bold">📢 공지사항</h2>
+
+        <div class="card shadow-sm border-0">
+          <div class="card-body p-0">
+            <table class="table table-hover table-striped mb-0">
+              <thead class="table-light border-bottom">
+                <tr>
+                  <th scope="col" class="text-center" style="width: 80px;">#</th>
+                  <th scope="col">제목</th>
+                  <th scope="col" class="text-center" style="width: 120px;">작성자</th>
+                  <th scope="col" class="text-center" style="width: 180px;">작성일시</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr th:if="${#lists.isEmpty(boardList)}">
+                  <td colspan="4" class="text-center py-4 text-muted">등록된 게시글이 없습니다.</td>
+                </tr>
+
+                <tr th:each="board, boardStat : ${boardList}">
+                  <th scope="row" class="text-center" th:text="${boardStat.count}">1</th>
+                  <td>
+                    <a href="#" class="text-decoration-none text-dark fw-semibold" th:text="${board.title}">제목</a>
+                    <span class="badge bg-danger rounded-pill" style="font-size: 0.5em;"
+                      th:if="${boardStat.first}">NEW</span>
+                  </td>
+                  <td class="text-center">
+                    <span class="badge bg-secondary opacity-75" th:text="${board.writer}">작성자</span>
+                  </td>
+                  <td class="text-center text-muted small"
+                    th:text="${#temporals.format(board.createDateTime, 'yyyy-MM-dd HH:mm')}">
+                    2026-01-08 14:00
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="d-flex justify-content-end mt-3">
+          <a class="btn btn-primary" th:href="@{/board/write}">
+            글쓰기 ✏️
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script th:src="@{/webjars/bootstrap/5.3.3/js/bootstrap.bundle.min.js}"></script>
+
+</body>
+
+</html>
