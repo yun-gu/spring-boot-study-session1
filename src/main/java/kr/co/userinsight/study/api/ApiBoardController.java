@@ -1,4 +1,4 @@
-package kr.co.userinsight.study.controller;
+package kr.co.userinsight.study.api;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -6,19 +6,19 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.annotation.PostConstruct;
 import kr.co.userinsight.study.dto.Board;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
-@Controller
-@RequestMapping("/board")
-public class BoardController {
+@RestController
+@RequestMapping("/api/board")
+public class ApiBoardController {
 
   private final List<Board> boardList = new ArrayList();
 
@@ -30,19 +30,14 @@ public class BoardController {
   }
 
   @GetMapping("")
-  public String board(Model model) {
-    model.addAttribute("boardList", boardList);
-    return "board/list";
+  public ResponseEntity list() {
+    return ResponseEntity.ok(boardList);
   }
 
-  @GetMapping("/write")
-  public String write(Model model) {
-    return "board/write";
-  }
-
-  @PostMapping("/save")
-  public String save(@ModelAttribute Board board) {
+  @PostMapping("")
+  public ResponseEntity save(@RequestBody Board board) {
     boardList.add(board);
-    return "redirect:/board";
+    return ResponseEntity.ok().build();
   }
+
 }
